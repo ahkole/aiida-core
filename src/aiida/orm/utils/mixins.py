@@ -54,12 +54,12 @@ class FunctionCalculationMixin:
             self._set_function_number_of_lines(len(source_list))
 
         try:
-            self._set_function_namespace(func.__globals__['__name__'])
+            self._set_function_namespace(inspect.unwrap(func).__globals__['__name__'])
         except Exception:
             pass
 
         try:
-            source_file_path = inspect.getsourcefile(func)
+            source_file_path = inspect.getsourcefile(inspect.unwrap(func))
             if source_file_path:
                 with open(source_file_path, 'rb') as handle:
                     self.base.repository.put_object_from_filelike(  # type: ignore[attr-defined]
